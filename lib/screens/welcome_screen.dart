@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:seniorproject/screens/login_screen.dart';
+import 'package:seniorproject/screens/home_screen.dart';
+import 'package:seniorproject/services/readjson.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -68,9 +71,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
                     );
-                  },
+                    // ReadJson().university();
+                   },
+
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
