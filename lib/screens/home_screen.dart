@@ -34,20 +34,19 @@ class _HomeScreenState extends State<HomeScreen> {
     FacultyScreen(),
     CourseScreen(),
   ];
-  
+
   final List<String> _titles = [
-    "home",
-    "university",
-    "faculty",
-    "course",
+    "Home",
+    "University",
+    "Faculty",
+    "Course",
   ];
 
-
   void _onItemTapped(int index) {
-  setState(() {
-    _selectedIndex = index;
-  });
-}
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,57 +54,57 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(_titles[_selectedIndex]),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'เมนูหลัก',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('หน้าหลัก'),
-              onTap: () {
-                Navigator.pop(context);
-                _onItemTapped(0);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.account_balance),
-              title: Text('มหาวิทยาลัย'),
-              onTap: () {
-                Navigator.pop(context);
-                _onItemTapped(1);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.group),
-              title: Text('คณะ'),
-              onTap: () {
-                Navigator.pop(context);
-                _onItemTapped(2);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.book),
-              title: Text('หลักสูตร'),
-              onTap: () {
-                // Navigator.pop(context);
-                _onItemTapped(3);
-              },
-            ),
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: <Widget>[
+      //       // DrawerHeader(
+      //       //   decoration: BoxDecoration(
+      //       //     color: Colors.lightBlue,
+      //       //   ),
+      //       //   child: Text(
+      //       //     'เมนูหลัก',
+      //       //     style: TextStyle(
+      //       //       color: Colors.white,
+      //       //       fontSize: 24,
+      //       //     ),
+      //       //   ),
+      //       // ),
+      //       ListTile(
+      //         leading: Icon(Icons.home),
+      //         title: Text('หน้าหลัก'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           _onItemTapped(0);
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.account_balance),
+      //         title: Text('มหาวิทยาลัย'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           _onItemTapped(1);
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.group),
+      //         title: Text('คณะ'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           _onItemTapped(2);
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.book),
+      //         title: Text('หลักสูตร'),
+      //         onTap: () {
+      //           // Navigator.pop(context);
+      //           _onItemTapped(3);
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      )
       body: Stack(
         children: [
           Container(
@@ -142,7 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.lightBlue[800],
+        selectedItemColor: Colors.black87,
+        unselectedItemColor:
+            Colors.lightBlue, // สีของไอคอนและข้อความเมื่อไม่ถูกเลือก
+        selectedLabelStyle:
+            TextStyle(color: Colors.black87), // สีของข้อความเมื่อถูกเลือก
+        unselectedLabelStyle:
+            TextStyle(color: Colors.black), // สีของข้อความเมื่อไม่ถูกเลือก
         onTap: _onItemTapped,
       ),
     );

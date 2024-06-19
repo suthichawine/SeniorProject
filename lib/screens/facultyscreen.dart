@@ -36,7 +36,7 @@ class FacultyScreen extends StatelessWidget {
         itemCount: faculties.length,
         itemBuilder: (context, index) {
           return Card(
-            margin: EdgeInsets.all(8.0),
+            margin: EdgeInsets.all(14.0),
             child: ListTile(
               title: Text(faculties[index]['title']!),
               subtitle: Text(faculties[index]['description']!),
