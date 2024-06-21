@@ -1,8 +1,7 @@
 import 'dart:js';
 
-import 'package:seniorproject/screens/coursescreen.dart';
+// import 'package:seniorproject/screens/coursescreen.dart';
 import 'package:seniorproject/screens/facultyscreen.dart';
-import 'package:seniorproject/screens/home_screen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
 import 'package:seniorproject/screens/welcome_screen.dart';
 
@@ -21,10 +20,10 @@ class AppRouter {
   // Router Map
   static get routes => {
     welcome: (context) => WelcomeScreen(),
-    home: (context) => HomeScreen(),
+    // home: (context) => HomeScreen(),
     university: (context) => UniversityScreen(),
     faculty: (context) => FacultyScreen(),
-    course: (context) => CourseScreen(),
+    // course: (context) => CourseScreen(),
     // register: (context) => RegisterScreen(),
   };
 

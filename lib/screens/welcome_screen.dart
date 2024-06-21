@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:seniorproject/screens/home_screen.dart';
-import 'package:seniorproject/services/readjson.dart';
+import 'package:seniorproject/components/buttoms_nav.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
@@ -69,13 +69,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => BottomsNav()),
                     );
                     // ReadJson().university();
-                   },
-
+                  },
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
