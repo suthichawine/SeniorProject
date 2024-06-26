@@ -48,12 +48,12 @@ class _BottomsNavState extends State<BottomsNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _titles[_selectedIndex],
-          style: optionStyle,
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     _titles[_selectedIndex],
+      //     style: optionStyle,
+      //   ),
+      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
