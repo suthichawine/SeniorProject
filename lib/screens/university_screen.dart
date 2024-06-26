@@ -36,68 +36,99 @@ class UniversityScreen extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        // ทำให้ content ที่อยู่ใน Scaffold ถูก resize เมื่อ keyboard เปิด/ปิด
+        resizeToAvoidBottomInset: true,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                search(),
-                const SizedBox(height: 20),
-                images(imagePaths),
-                department(imagePaths),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Card(
-                        color: Colors.lightBlue[20], // ตั้งค่าสีของ card
-                        shadowColor: Colors.black87, // ตั้งค่าสีเงา
-                        elevation: 3, // ตั้งค่า elevation
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width *
-                              0.462, // กำหนดความกว้างเป็น 50% ของความกว้างหน้าจอ
-                          height: MediaQuery.of(context).size.width *
-                              0.4, // กำหนดความสูงเท่ากับความกว้างเพื่อให้เป็นสี่เหลี่ยมจตุรัส
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.asset(
-                              "assets/images/science.png",
-                              fit: BoxFit.cover, // ให้รูปภาพกรอบที่มี
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Card(
-                        color: Colors.lightBlue[20], // ตั้งค่าสีของ card
-                        shadowColor: Colors.black87, // ตั้งค่าสีเงา
-                        elevation: 3, // ตั้งค่า elevation
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width *
-                              0.462, // กำหนดความกว้างเป็น 50% ของความกว้างหน้าจอ
-                          height: MediaQuery.of(context).size.width *
-                              0.4, // กำหนดความสูงเท่ากับความกว้างเพื่อให้เป็นสี่เหลี่ยมจตุรัส
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.asset(
-                              "assets/images/science.png",
-                              fit: BoxFit.cover, // ให้รูปภาพกรอบที่มี
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+          // ใช้ SingleChildScrollView รอบทั้งหมดเพื่อให้สามารถ scroll ได้เมื่อ keyboard เปิดขึ้น
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  search(),
+                  const SizedBox(height: 20),
+                  images(imagePaths),
+                  const SizedBox(height: 20),
+                  department(imagePaths),
+                  const SizedBox(height: 20),
+                  facultiesList(context, faculties)
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget facultiesList(
+      BuildContext context, List<Map<String, String>> faculties) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text("คณะ"),
+            ),
+            const Spacer(),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text('ดูเพิ่มเติม'),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: faculties.map((faculty) {
+            return Row(children: [
+              InkWell(
+                onTap: () {},
+                child: Card(
+                  color: Colors.lightBlue[20], // ตั้งค่าสีของ card
+                  shadowColor: Colors.black87, // ตั้งค่าสีเงา
+                  elevation: 5, // ตั้งค่า elevation
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width *
+                        0.46, // กำหนดความกว้างเป็น 50% ของความกว้างหน้าจอ
+                    height: MediaQuery.of(context).size.width *
+                        0.4, // กำหนดความสูงเท่ากับความกว้างเพื่อให้เป็นสี่เหลี่ยมจตุรัส
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            faculty['image']!, // ใช้รูปภาพจาก faculties
+                            fit: BoxFit.cover,
+                            width: 90, // ให้รูปภาพกรอบที่มี
+                            height: 90,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            faculty['title']!, // ใช้ชื่อคณะจาก faculties
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ]);
+          }).toList(),
+        ),
+      ],
     );
   }
 
