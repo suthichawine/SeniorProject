@@ -35,7 +35,7 @@ class FacultyScreen extends StatelessWidget {
       'image': 'assets/images/Education.png'
     },
   ];
-
+  
   FacultyScreen({super.key});
 
   @override
