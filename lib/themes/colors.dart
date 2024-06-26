@@ -26,7 +26,7 @@ class AppTheme {
     hintColor: accent,
     colorScheme: const ColorScheme.light(primary: primary),
     iconTheme: const IconThemeData(color: primaryText),
-    scaffoldBackgroundColor: Colors.blue[20],
+    scaffoldBackgroundColor: Colors.blue[50],
     appBarTheme: const AppBarTheme(
       titleTextStyle: TextStyle(
         color: icons,

@@ -71,9 +71,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => BottomsNav()),
+                      MaterialPageRoute(
+                        builder: (context) => BottomsNav(),
+                      ),
                     );
-                    // ReadJson().university();
                   },
                   child: Container(
                     padding:

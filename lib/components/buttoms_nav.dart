@@ -20,18 +20,18 @@ class _BottomsNavState extends State<BottomsNav> {
     FacultyScreen(),
     // CourseScreen(),
   ];
-    // Text(
-    //   'Index 0: Home',
-    //   style: optionStyle,
-    // ),
-    // Text(
-    //   'Index 1: Business',
-    //   style: optionStyle,
-    // ),
-    // Text(
-    //   'Index 2: School',
-    //   style: optionStyle,
-    // ),
+  // Text(
+  //   'Index 0: Home',
+  //   style: optionStyle,
+  // ),
+  // Text(
+  //   'Index 1: Business',
+  //   style: optionStyle,
+  // ),
+  // Text(
+  //   'Index 2: School',
+  //   style: optionStyle,
+  // ),
   final List<String> _titles = [
     "Home",
     "University",
@@ -49,7 +49,10 @@ class _BottomsNavState extends State<BottomsNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_selectedIndex]),
+        title: Text(
+          _titles[_selectedIndex],
+          style: optionStyle,
+        ),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

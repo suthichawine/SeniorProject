@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:seniorproject/app_router.dart';
 import 'package:seniorproject/themes/colors.dart';
-import 'screens/welcome_screen.dart'; // Import WelcomeScreen
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -17,9 +17,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       theme: AppTheme.lightTheme,
-      home: const WelcomeScreen(),
+      routes: AppRouter.routes,
+      initialRoute: AppRouter.welcome,
     );
   }
 }
