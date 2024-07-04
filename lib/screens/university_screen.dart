@@ -1,13 +1,22 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: non_constant_identifier_names
 
-class UniversityScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:seniorproject/controllers/faculty_controller.dart';
+
+class UniversityScreen extends StatefulWidget {
   const UniversityScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UniversityScreen> createState() => _UniversityScreenState();
+}
+
+class _UniversityScreenState extends State<UniversityScreen> {
+  final FacultyController facultyController = Get.put(FacultyController());
 
   @override
   Widget build(BuildContext context) {
     final List<String> imagePaths = [
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
       'assets/images/ksu1.jpg',
       'assets/images/ksu1.jpg',
       'assets/images/ksu1.jpg',
@@ -46,13 +55,13 @@ class UniversityScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  search(),
+                  Search(),
                   const SizedBox(height: 20),
-                  images(imagePaths),
+                  Images(imagePaths),
                   const SizedBox(height: 20),
-                  department(imagePaths),
+                  Department(imagePaths),
                   const SizedBox(height: 20),
-                  facultiesList(context, faculties)
+                  FacultiesList(context, faculties)
                 ],
               ),
             ),
@@ -62,7 +71,7 @@ class UniversityScreen extends StatelessWidget {
     );
   }
 
-  Widget facultiesList(
+  Widget FacultiesList(
       BuildContext context, List<Map<String, String>> faculties) {
     return Column(
       children: [
@@ -95,7 +104,7 @@ class UniversityScreen extends StatelessWidget {
               InkWell(
                 onTap: () {},
                 child: Card(
-                  color: Colors.lightBlue[20], // ตั้งค่าสีของ card
+                  color: Colors.lightBlue[40], // ตั้งค่าสีของ card
                   shadowColor: Colors.black87, // ตั้งค่าสีเงา
                   elevation: 5, // ตั้งค่า elevation
                   child: SizedBox(
@@ -132,7 +141,7 @@ class UniversityScreen extends StatelessWidget {
     );
   }
 
-  Widget department(List<String> imagePaths) {
+  Widget Department(List<String> imagePaths) {
     return Column(
       children: [
         Row(
@@ -188,7 +197,7 @@ class UniversityScreen extends StatelessWidget {
     );
   }
 
-  Widget search() {
+  Widget Search() {
     return SearchAnchor(
       builder: (BuildContext context, SearchController controller) {
         return SearchBar(
@@ -207,12 +216,7 @@ class UniversityScreen extends StatelessWidget {
             Tooltip(
               message: 'Change brightness mode',
               child: IconButton(
-                // isSelected: isDark,
-                onPressed: () {
-                  // setState(() {
-                  //   isDark = !isDark;
-                  // });
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.wb_sunny_outlined),
                 selectedIcon: const Icon(Icons.brightness_2_outlined),
               ),
@@ -221,25 +225,35 @@ class UniversityScreen extends StatelessWidget {
         );
       },
       suggestionsBuilder: (BuildContext context, SearchController controller) {
-        return List<ListTile>.generate(
-          5,
-          (int index) {
-            final String item = 'item $index';
-            return ListTile(
-              title: Text(item),
-              onTap: () {
-                // setState(() {
-                //   controller.closeView(item);
-                // });
-              },
-            );
-          },
-        );
+        return [
+          Obx(() {
+            if (facultyController.isLoading.value) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else {
+              return Column(
+                children: facultyController.faculties.map((faculty) {
+                  return ListTile(
+                    title: Text(faculty.department),
+                    onTap: () {
+                      controller.closeView(faculty.department);
+                      FocusScope.of(context).unfocus();
+                    },
+                  );
+                }).toList(),
+              );
+            }
+          }),
+        ];
       },
     );
   }
 
-  Widget images(List<String> imagePaths) {
+  Widget Images(List<String> imagePaths) {
     return SizedBox(
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -257,6 +271,8 @@ class UniversityScreen extends StatelessWidget {
                 child: Image.asset(
                   path,
                   fit: BoxFit.cover,
+                  width: 200,
+                  height: 250,
                 ),
               ),
             );

@@ -66,7 +66,7 @@ class FacultyScreen extends StatelessWidget {
                   );
                 },
                 child: Card(
-                  color: Colors.lightBlue[20], // ตั้งค่าสีของ card
+                  color: Colors.lightBlue[40], // ตั้งค่าสีของ card
                   shadowColor: Colors.black87, // ตั้งค่าสีเงา
                   elevation: 3, // ตั้งค่า elevation
                   child: Column(
