@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seniorproject/screens/coursescreen.dart';
 
 class DepartmentScreen extends StatelessWidget {
   final String message;
@@ -6,7 +7,6 @@ class DepartmentScreen extends StatelessWidget {
   DepartmentScreen({Key? key, required this.message}) : super(key: key);
   final TextEditingController _controller = TextEditingController();
 
-  // Example list of departments
   final List<String> departments = [
     'สาขาวิศวกรรมเครื่องกล',
     'สาขาวิศวกรรมอุตสาหการและระบบอัติโนมัติ',
@@ -16,7 +16,6 @@ class DepartmentScreen extends StatelessWidget {
     'สาขาวิศวกรรมเครื่องจักรกลเกษตร',
   ];
 
-  // Use the same image for all departments
   final String departmentLogo = 'assets/images/computer.jpg';
 
   @override
@@ -36,44 +35,30 @@ class DepartmentScreen extends StatelessWidget {
             Center(
               child: SizedBox(
                 width: 250,
-                // child: TextField(
-                //   controller: _controller,
-                //   obscureText: false,
-                //   decoration: InputDecoration(
-                //     border: OutlineInputBorder(),
-                //     labelText: 'ค้นหาสาขา',
-                //   ),
-                // ),
               ),
             ),
-            // Center(
-            //   child: ElevatedButton(
-            //     style: style,
-            //     onPressed: () {
-            //       print(_controller.text);
-            //       // Implement search functionality here
-            //     },
-            //     child: const Text('ค้นหา'),
-            //   ),
-            // ),
             SizedBox(height: 16),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // ตั้งค่าจำนวนคอลัมน์เป็น 2
-                  mainAxisSpacing: 10.0, // ตั้งค่าช่องว่างระหว่างแถว
-                  crossAxisSpacing: 10.0, // ตั้งค่าช่องว่างระหว่างคอลัมน์
-                  childAspectRatio:
-                      1.0, // ตั้งค่าอัตราส่วนของ item // อัตราส่วนของขนาดของกล่องสี่เหลี่ยมใน GridView
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                  childAspectRatio: 1.0,
                 ),
                 itemCount: departments.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: InkWell(
                       onTap: () {
-                        // Handle tapping on each department item
-                        print('Selected department: ${departments[index]}');
-                        // Navigate to department details or perform action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CourseScreen(
+                              department: departments[index],
+                            ),
+                          ),
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

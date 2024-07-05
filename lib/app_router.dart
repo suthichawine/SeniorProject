@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seniorproject/screens/coursescreen.dart';
 import 'package:seniorproject/screens/department_screen.dart';
 import 'package:seniorproject/screens/facultyscreen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
@@ -10,6 +11,8 @@ class AppRouter {
   static const String university = 'university';
   static const String faculty = 'faculty';
   static const String department = 'department';
+  static const String course = 'course';
+
 
   // Router Map
   static Map<String, WidgetBuilder> get routes => {
