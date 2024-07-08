@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:seniorproject/screens/coursescreen.dart';
-import 'package:seniorproject/screens/facultyscreen.dart';
+import 'package:seniorproject/screens/faculty_screen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
 
 class BottomsNav extends StatefulWidget {

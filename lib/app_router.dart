@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:seniorproject/screens/coursescreen.dart';
+import 'package:seniorproject/screens/course_screen.dart';
 import 'package:seniorproject/screens/department_screen.dart';
-import 'package:seniorproject/screens/facultyscreen.dart';
+import 'package:seniorproject/screens/faculty_screen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
 import 'package:seniorproject/screens/welcome_screen.dart';
 

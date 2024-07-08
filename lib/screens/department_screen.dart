@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seniorproject/screens/coursescreen.dart';
+import 'package:seniorproject/screens/course_screen.dart';
 
 class DepartmentScreen extends StatelessWidget {
   final String message;

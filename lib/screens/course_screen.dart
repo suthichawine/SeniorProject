@@ -10,7 +10,7 @@ class CourseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('หลักสูตรของ $department'),
+        title: Text('หลักสูตร $department'),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
