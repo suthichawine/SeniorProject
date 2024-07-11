@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seniorproject/screens/course_screen.dart';
+// import 'package:seniorproject/screens/course_screen.dart';
 import 'package:seniorproject/screens/department_screen.dart';
 import 'package:seniorproject/screens/faculty_screen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
@@ -12,12 +12,17 @@ class AppRouter {
   static const String faculty = 'faculty';
   static const String department = 'department';
   static const String course = 'course';
+  static const String home = 'home';
+
 
 
   // Router Map
   static Map<String, WidgetBuilder> get routes => {
-        welcome: (context) => const WelcomeScreen(),
+        welcome: (context) =>   WelcomeScreen(),
         university: (context) => UniversityScreen(),
+        home: (context) => HomeScreen(),
+
+
         faculty: (context) => FacultyScreen(),
         department: (context) {
           final args = ModalRoute.of(context)!.settings.arguments as String;

@@ -24,8 +24,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  carousel_slider: ^4.0.0
   animated_background: ^2.0.0
-  cupertino_icons: ^1.0.2
   rive: ^0.9.1
   flutter_svg: ^1.1.6
   firebase_core: ^2.27.0
@@ -33,6 +33,7 @@ dependencies:
   get: ^4.6.6
   shimmer: ^3.0.0
   introduction_screen: ^3.1.11 # Introduction Screen
+  flutter_onboarding_slider: ^1.0.11
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,11 @@ flutter:
     - assets/images/science.png
     - assets/images/management.png
     - assets/images/computer.jpg
+    - assets/images/ksu1.jpg
+    - assets/images/ksu2.jpg
+    - assets/images/ksu3.jpg
+
+
 
   fonts:
     - family: Intel
