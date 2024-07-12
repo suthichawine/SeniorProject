@@ -1,22 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:seniorproject/app_router.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: WelcomeScreen(),
-      routes: {
-        '/home': (context) => HomeScreen(),
-      },
-    );
-  }
-}
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -29,7 +15,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.pushReplacementNamed(context, AppRouter.bottomsNav );
   }
 
   Widget _buildImage(String assetName, [double width = 350]) {
@@ -43,27 +29,27 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       DeviceOrientation.portraitDown,
     ]);
 
-    const bodyStyle = TextStyle(fontSize: 19.0);
+    const bodyStyle = TextStyle(fontSize: 20.0);
 
     const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
+      pageColor: Colors.lightBlueAccent,
       imagePadding: EdgeInsets.zero,
     );
 
     return SafeArea(
       child: IntroductionScreen(
         key: introKey,
-        globalBackgroundColor: Colors.white,
+        globalBackgroundColor: Colors.lightBlueAccent,
         pages: [
           PageViewModel(
-            title: "ระบบจัดการสต็อกสมัยใหม่",
-            body: "เริ่มต้นใช้ระบบกับเราเพียง 3 ขั้นตอนง่ายๆ และเริ่มต้นใช้งานได้ทันที",
+            title: "ยินดีต้อนรับสู่มหาวิทยาลัยกาฬสินธุ์",
+            body: "สำรวจโอกาสและประสบการณ์การเรียนรู้ที่ไม่มีที่สิ้นสุดกับเรา",
             image: Padding(
               padding: const EdgeInsets.only(top: 100.0),
-              child: _buildImage('ksu1.jpg'),
+              child: _buildImage('ksu.png'),
             ),
             decoration: pageDecoration,
           ),
@@ -107,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
         ),
         dotsContainerDecorator: const ShapeDecoration(
-          color: Colors.black87,
+          color: Colors.blueGrey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
@@ -117,17 +103,5 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-      ),
-      body: Center(
-        child: Text('This is the home screen.'),
-      ),
-    );
-  }
-}
+
           
