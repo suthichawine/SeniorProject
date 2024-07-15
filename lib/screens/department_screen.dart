@@ -32,60 +32,75 @@ class DepartmentScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: SizedBox(
-                width: 250,
-              ),
+            TextField(
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              labelText: 'Enter your text',
+            ),
             ),
             SizedBox(height: 16),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                  childAspectRatio: 1.0,
-                ),
-                itemCount: departments.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CourseScreen(
-                              department: departments[index],
-                            ),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            departmentLogo,
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.cover,
-                          ),
-                          SizedBox(height: 8),
-                          Flexible(
-                            child: Text(
-                              departments[index],
-                              style: TextStyle(fontSize: 16.0),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+            ElevatedButton(
+            onPressed: () {
+              // Handle the press event
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Text('You entered: ${_controller.}'),
                   );
                 },
-              ),
-            ),
+              );
+            },
+            child: Text('Submit'),
+          ),
+            // Expanded(
+            //   child: GridView.builder(
+            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 2,
+            //       mainAxisSpacing: 10.0,
+            //       crossAxisSpacing: 10.0,
+            //       childAspectRatio: 1.0,
+            //     ),
+            //     itemCount: departments.length,
+            //     itemBuilder: (context, index) {
+            //       return Card(
+            //         child: InkWell(
+            //           onTap: () {
+            //             Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                 builder: (context) => CourseScreen(
+            //                   department: departments[index],
+            //                 ),
+            //               ),
+            //             );
+            //           },
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               Image.asset(
+            //                 departmentLogo,
+            //                 width: 80,
+            //                 height: 80,
+            //                 fit: BoxFit.cover,
+            //               ),
+            //               SizedBox(height: 8),
+            //               Flexible(
+            //                 child: Text(
+            //                   departments[index],
+            //                   style: TextStyle(fontSize: 16.0),
+            //                   textAlign: TextAlign.center,
+            //                   overflow: TextOverflow.ellipsis,
+            //                   maxLines: 3,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),
