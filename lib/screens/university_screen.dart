@@ -18,13 +18,9 @@ class _UniversityScreenState extends State<UniversityScreen> {
   Widget build(BuildContext context) {
     final List<String> imagePaths = [
       'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
-      'assets/images/ksu1.jpg',
+      'assets/images/ksu2.jpg',
+      'assets/images/ksu3.jpg',
+      'assets/images/ksu7.jpg',
     ];
 
     final List<Map<String, String>> faculties = [
@@ -161,7 +157,9 @@ class _UniversityScreenState extends State<UniversityScreen> {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  //  Navigator.pushNamed(context, '/department');
+                },
                 child: const Text('ดูเพิ่มเติม'),
               ),
             ),

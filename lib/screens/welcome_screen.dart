@@ -34,14 +34,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       titleTextStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w600),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.lightBlueAccent,
+      pageColor: Colors.white54,
       imagePadding: EdgeInsets.zero,
     );
 
     return SafeArea(
       child: IntroductionScreen(
         key: introKey,
-        globalBackgroundColor: Colors.lightBlueAccent,
+        globalBackgroundColor: Colors.blue[100],
         pages: [
           PageViewModel(
             title: "ยินดีต้อนรับสู่มหาวิทยาลัยกาฬสินธุ์",
@@ -86,14 +86,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         controlsPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
         dotsDecorator: const DotsDecorator(
           size: Size(10.0, 10.0),
-          color: Color(0xFFBDBDBD),
+          color: Color.fromARGB(255, 81, 175, 215),
           activeSize: Size(22.0, 10.0),
           activeShape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
           ),
         ),
         dotsContainerDecorator: const ShapeDecoration(
-          color: Colors.blueGrey,
+          color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
