@@ -13,7 +13,8 @@ class FacultyService {
       List<Faculty> faculties = querySnapshot.docs.map((doc) {
         return Faculty(
           id: doc.id,
-          department: doc["department"],
+          faculty_name: doc["faculty_name"],
+          image: doc["image"],
         );
       }).toList();
       return faculties;

@@ -1,41 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:seniorproject/app_router.dart';
+import 'package:seniorproject/controllers/faculty_controller.dart';
 
 class FacultyScreen extends StatelessWidget {
   // Example list of faculties with image paths
-  final List<Map<String, String>> faculties = [
-    {
-      'title': 'คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม',
-      'description': 'Provides education in business and management.',
-      'image': 'assets/images/engineering.png'
-    },
-    {
-      'title': 'คณะวิทยาศาสตร์และเทคโนโลยีสุขภาพ',
-      'description': 'Provides education in business and management.',
-      'image': 'assets/images/science.png'
-    },
-    {
-      'title': 'คณะเทคโนโลยีการเกษตร',
-      'description': 'Provides education in business and management.',
-      'image': 'assets/images/agriculture.png'
-    },
-    {
-      'title': 'คณะบริหารศาสตร์',
-      'description': 'Provides education in business and management.',
-      'image': 'assets/images/management.png'
-    },
-    {
-      'title': 'คณะศิลปศาสตร์',
-      'description': 'Provides education in business and management.',
-      'image': 'assets/images/art.png'
-    },
-    {
-      'title': 'คณะศึกษาศาสตร์',
-      'description': 'Provides education in business and management.',
-      'image': 'assets/images/Education.png'
-    },
-  ];
-  
+  final FacultyController facultyController = Get.put(FacultyController());
+
   FacultyScreen({super.key});
 
   @override
@@ -50,7 +21,7 @@ class FacultyScreen extends StatelessWidget {
             crossAxisSpacing: 10.0, // ตั้งค่าช่องว่างระหว่างคอลัมน์
             childAspectRatio: 1.0, // ตั้งค่าอัตราส่วนของ item
           ),
-          itemCount: faculties.length,
+          itemCount: facultyController.faculties.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(0),
@@ -62,7 +33,7 @@ class FacultyScreen extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     AppRouter.department,
-                    arguments: faculties[index]["title"],
+                    arguments: facultyController.faculties[index].id,
                   );
                 },
                 child: Card(
@@ -73,14 +44,14 @@ class FacultyScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        faculties[index]['image']!,
+                        facultyController.faculties[index].image,
                         width: 100,
                         height: 100,
                       ),
                       const SizedBox(
                           height: 10), // เพิ่มระยะห่างระหว่าง image และ text
                       Text(
-                        faculties[index]['title']!,
+                        facultyController.faculties[index].faculty_name,
                         textAlign:
                             TextAlign.center, // ตั้งค่าให้ title อยู่ตรงกลาง
                         style: const TextStyle(

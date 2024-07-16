@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seniorproject/screens/course_screen.dart';
+import 'package:seniorproject/services/department_service.dart';
 
 class DepartmentScreen extends StatelessWidget {
   final String message;
@@ -22,6 +23,7 @@ class DepartmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+    final departmentController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,26 +35,22 @@ class DepartmentScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-            decoration: InputDecoration(
+              controller: departmentController,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-              labelText: 'Enter your text',
+                labelText: 'Enter your text',
+              ),
             ),
-            ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
-            onPressed: () {
-              // Handle the press event
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('You entered: ${_controller.}'),
-                  );
-                },
-              );
-            },
-            child: Text('Submit'),
-          ),
+              onPressed: () {
+                final departmentService = DepartmentService();
+                departmentService.create(
+                    message, departmentController.text);
+                print('ok');
+              },
+              child: Text('Submit'),
+            ),
             // Expanded(
             //   child: GridView.builder(
             //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

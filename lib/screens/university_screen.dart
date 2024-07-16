@@ -27,12 +27,12 @@ class _UniversityScreenState extends State<UniversityScreen> {
       {
         'title': 'คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม',
         'description': 'Provides education in business and management.',
-        'image': 'assets/images/engineering.png'
+        'image': 'assets/images/engineering1.webp'
       },
       {
         'title': 'คณะวิทยาศาสตร์และเทคโนโลยีสุขภาพ',
         'description': 'Provides education in business and management.',
-        'image': 'assets/images/science.png'
+        'image': 'assets/images/science6.webp'
       },
     ];
 
@@ -236,9 +236,9 @@ class _UniversityScreenState extends State<UniversityScreen> {
               return Column(
                 children: facultyController.faculties.map((faculty) {
                   return ListTile(
-                    title: Text(faculty.department),
+                    title: Text(faculty.faculty_name),
                     onTap: () {
-                      controller.closeView(faculty.department);
+                      controller.closeView(faculty.faculty_name);
                       FocusScope.of(context).unfocus();
                     },
                   );

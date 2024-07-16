@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final faculty = facultyFromJson(jsonString);
-
 import 'dart:convert';
 
 List<Faculty> facultyFromJson(String str) =>
@@ -12,20 +8,24 @@ String facultyToJson(List<Faculty> data) =>
 
 class Faculty {
   String id;
-  String department;
+  String faculty_name;
+  String image;
 
   Faculty({
     required this.id,
-    required this.department,
+    required this.faculty_name,
+    required this.image,
   });
 
   factory Faculty.fromJson(Map<String, dynamic> json) => Faculty(
         id: json["id"],
-        department: json["department"],
+        faculty_name: json["faculty_name"],
+        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "department": department,
+        "faculty_name": faculty_name,
+        "image": image,
       };
 }
