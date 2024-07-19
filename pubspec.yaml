@@ -46,11 +46,7 @@ flutter:
   assets:
     - assets/images/
     - assets/json/university.json
-    - assets/images/engineering.png
-    - assets/images/agriculture.png
     - assets/images/art.png
-    - assets/images/science.png
-    - assets/images/management.png
     - assets/images/computer.jpg
     - assets/images/ksu1.jpg
     - assets/images/ksu2.jpg
