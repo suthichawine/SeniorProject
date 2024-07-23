@@ -34,68 +34,79 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       titleTextStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w600),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white54,
       imagePadding: EdgeInsets.zero,
     );
 
     return SafeArea(
-      child: IntroductionScreen(
-        key: introKey,
-        globalBackgroundColor: Colors.blue[100],
-        pages: [
-          PageViewModel(
-            title: "ยินดีต้อนรับสู่มหาวิทยาลัยกาฬสินธุ์",
-            body: "สำรวจโอกาสและประสบการณ์การเรียนรู้ที่ไม่มีที่สิ้นสุดกับเรา",
-            image: Padding(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: _buildImage('ksu.png'),
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment.center,
+              radius: 0.8,
+              colors: [
+                Color(0xFF42A5F5), // สีฟ้าอ่อน
+                Color(0xFF0D47A1), // สีน้ำเงินเข้ม
+              ],
             ),
-            decoration: pageDecoration,
           ),
-          PageViewModel(
-            title: "มหาวิทยาลัยกาฬสินธุ์สู่ความเป็นเลิศ",
-            body: "มหาวิทยาลัยกาฬสินธุ์ มุ่งสู่ความเป็นเลิศด้านการศึกษา หล่อหลอมบัณฑิตที่มีคุณภาพ พร้อมทักษะที่ตรงกับความต้องการของตลาดงาน",
-            image: Padding(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: _buildImage('ksu2.jpg'),
+          child: IntroductionScreen(
+            key: introKey,
+            pages: [
+              PageViewModel(
+                title: "ยินดีต้อนรับสู่มหาวิทยาลัยกาฬสินธุ์",
+                body: "สำรวจโอกาสและประสบการณ์การเรียนรู้ที่ไม่มีที่สิ้นสุดกับเรา",
+                image: Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: _buildImage('ksu.png'),
+                ),
+                decoration: pageDecoration,
+              ),
+              PageViewModel(
+                title: "มหาวิทยาลัยกาฬสินธุ์สู่ความเป็นเลิศ",
+                body: "มหาวิทยาลัยกาฬสินธุ์ มุ่งสู่ความเป็นเลิศด้านการศึกษา หล่อหลอมบัณฑิตที่มีคุณภาพ พร้อมทักษะที่ตรงกับความต้องการของตลาดงาน",
+                image: Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: _buildImage('ksu2.jpg'),
+                ),
+                decoration: pageDecoration,
+              ),
+              PageViewModel(
+                title: "อนาคตที่สดใสรอคุณอยู่",
+                body: "มุ่งมั่นส่งเสริมให้นักศึกษาบรรลุเป้าหมาย และประสบความสำเร็จบนเส้นทางที่คุณเลือก",
+                image: Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: _buildImage('ksu3.jpg'),
+                ),
+                decoration: pageDecoration,
+              ),
+            ],
+            onDone: () => _onIntroEnd(context),
+            onSkip: () => _onIntroEnd(context),
+            showSkipButton: true,
+            skipOrBackFlex: 0,
+            nextFlex: 0,
+            showBackButton: false,
+            skip: const Text('ข้าม', style: TextStyle(fontWeight: FontWeight.w600)),
+            next: const Icon(Icons.arrow_forward),
+            done: const Text('เสร็จสิ้น', style: TextStyle(fontWeight: FontWeight.w600)),
+            curve: Curves.fastLinearToSlowEaseIn,
+            controlsMargin: const EdgeInsets.all(16),
+            controlsPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+            dotsDecorator: const DotsDecorator(
+              size: Size(10.0, 10.0),
+              color: Color.fromARGB(255, 81, 175, 215),
+              activeSize: Size(22.0, 10.0),
+              activeShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              ),
             ),
-            decoration: pageDecoration,
-          ),
-          PageViewModel(
-            title: "อนาคตที่สดใสรอคุณอยู่",
-            body: "มุ่งมั่นส่งเสริมให้นักศึกษาบรรลุเป้าหมาย และประสบความสำเร็จบนเส้นทางที่คุณเลือก",
-            image: Padding(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: _buildImage('ksu3.jpg'),
+            dotsContainerDecorator: const ShapeDecoration(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
             ),
-            decoration: pageDecoration,
-          ),
-        ],
-        onDone: () => _onIntroEnd(context),
-        onSkip: () => _onIntroEnd(context),
-        showSkipButton: true,
-        skipOrBackFlex: 0,
-        nextFlex: 0,
-        showBackButton: false,
-        skip: const Text('ข้าม', style: TextStyle(fontWeight: FontWeight.w600)),
-        next: const Icon(Icons.arrow_forward),
-        done: const Text('เสร็จสิ้น',
-            style: TextStyle(fontWeight: FontWeight.w600)),
-        curve: Curves.fastLinearToSlowEaseIn,
-        controlsMargin: const EdgeInsets.all(16),
-        controlsPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-        dotsDecorator: const DotsDecorator(
-          size: Size(10.0, 10.0),
-          color: Color.fromARGB(255, 81, 175, 215),
-          activeSize: Size(22.0, 10.0),
-          activeShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
-          ),
-        ),
-        dotsContainerDecorator: const ShapeDecoration(
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
         ),
       ),
