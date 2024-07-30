@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -17,8 +18,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Navigator.pushReplacementNamed(context, AppRouter.bottomsNav);
   }
 
-  Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.asset('assets/images/$assetName', width: width);
+  Widget _buildImage(String assetName, bool isShadow, [double width = 350]) {
+    if (isShadow) {
+      return Container(
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0), // กำหนด border radius
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2), // สีของเงา
+              spreadRadius: 2, // การกระจายของเงา
+              blurRadius: 5, // การเบลอของเงา
+              offset: const Offset(0, 3), // การย้ายที่ของเงา (x, y)
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius:
+              BorderRadius.circular(12.0), // กำหนด border radius เช่นเดียวกัน
+          child: Image.asset('assets/images/$assetName', width: width),
+        ),
+      );
+    } else {
+      return Image.asset('assets/images/$assetName', width: width);
+    }
   }
 
   @override
@@ -36,17 +59,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       imagePadding: EdgeInsets.zero,
     );
-
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      body: Center(
+        child: Container(
           decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment.center,
-              radius: 0.8,
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
               colors: [
-                Color(0xFF42A5F5), // สีฟ้าอ่อน
-                Color(0xFF0D47A1), // สีน้ำเงินเข้ม
+                Colors.blue,
+                Colors.red,
               ],
             ),
           ),
@@ -55,28 +77,31 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             pages: [
               PageViewModel(
                 title: "ยินดีต้อนรับสู่มหาวิทยาลัยกาฬสินธุ์",
-                body: "สำรวจโอกาสและประสบการณ์การเรียนรู้ที่ไม่มีที่สิ้นสุดกับเรา",
+                body:
+                    "สำรวจโอกาสและประสบการณ์การเรียนรู้ที่ไม่มีที่สิ้นสุดกับเรา",
                 image: Padding(
                   padding: const EdgeInsets.only(top: 50.0),
-                  child: _buildImage('ksu.png'),
+                  child: _buildImage('ksu.png', false, 230),
                 ),
                 decoration: pageDecoration,
               ),
               PageViewModel(
                 title: "มหาวิทยาลัยกาฬสินธุ์สู่ความเป็นเลิศ",
-                body: "มหาวิทยาลัยกาฬสินธุ์ มุ่งสู่ความเป็นเลิศด้านการศึกษา หล่อหลอมบัณฑิตที่มีคุณภาพ พร้อมทักษะที่ตรงกับความต้องการของตลาดงาน",
+                body:
+                    "มหาวิทยาลัยกาฬสินธุ์ มุ่งสู่ความเป็นเลิศด้านการศึกษา หล่อหลอมบัณฑิตที่มีคุณภาพ พร้อมทักษะที่ตรงกับความต้องการของตลาดงาน",
                 image: Padding(
                   padding: const EdgeInsets.only(top: 50.0),
-                  child: _buildImage('ksu2.jpg'),
+                  child: _buildImage('ksu2.jpg', true),
                 ),
                 decoration: pageDecoration,
               ),
               PageViewModel(
                 title: "อนาคตที่สดใสรอคุณอยู่",
-                body: "มุ่งมั่นส่งเสริมให้นักศึกษาบรรลุเป้าหมาย และประสบความสำเร็จบนเส้นทางที่คุณเลือก",
+                body:
+                    "มุ่งมั่นส่งเสริมให้นักศึกษาบรรลุเป้าหมาย และประสบความสำเร็จบนเส้นทางที่คุณเลือก",
                 image: Padding(
                   padding: const EdgeInsets.only(top: 50.0),
-                  child: _buildImage('ksu3.jpg'),
+                  child: _buildImage('ksu3.jpg', true),
                 ),
                 decoration: pageDecoration,
               ),
@@ -87,9 +112,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             skipOrBackFlex: 0,
             nextFlex: 0,
             showBackButton: false,
-            skip: const Text('ข้าม', style: TextStyle(fontWeight: FontWeight.w600)),
+            skip: const Text('ข้าม',
+                style: TextStyle(fontWeight: FontWeight.w600)),
             next: const Icon(Icons.arrow_forward),
-            done: const Text('เสร็จสิ้น', style: TextStyle(fontWeight: FontWeight.w600)),
+            done: const Text('เสร็จสิ้น',
+                style: TextStyle(fontWeight: FontWeight.w600)),
             curve: Curves.fastLinearToSlowEaseIn,
             controlsMargin: const EdgeInsets.all(16),
             controlsPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),

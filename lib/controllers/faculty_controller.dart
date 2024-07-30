@@ -15,7 +15,7 @@ class FacultyController extends GetxController {
   Future<void> fetchFaculties() async {
     try {
       isLoading(true);
-      await Future.delayed(const Duration(seconds: 3));
+      // await Future.delayed(const Duration(seconds: 3));
       var fetchedFaculties = await FacultyService().getAllFaculties();
       faculties.assignAll(fetchedFaculties);
     } finally {
