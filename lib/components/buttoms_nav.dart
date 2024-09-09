@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:seniorproject/screens/coursescreen.dart';
 import 'package:seniorproject/screens/faculty_screen.dart';
+import 'package:seniorproject/screens/home_screen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
 
 class BottomsNav extends StatefulWidget {
@@ -16,7 +17,7 @@ class _BottomsNavState extends State<BottomsNav> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
     UniversityScreen(),
-    UniversityScreen(),
+    HomeScreen(),
     FacultyScreen(),
     // CourseScreen(),
   ];

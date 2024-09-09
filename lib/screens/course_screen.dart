@@ -1,38 +1,43 @@
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:seniorproject/services/department_service.dart';
+// import 'package:seniorproject/models/plo_model.dart'; // นำเข้าโมเดล PLO
 
-class CourseScreen extends StatelessWidget {
-  final String faculty_name;
+// class CourseScreen extends StatelessWidget {
+//   final String departmentId;
 
-  const CourseScreen({Key? key, required this.faculty_name}) : super(key: key);
+//   CourseScreen({Key? key, required this.departmentId}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('หลักสูตร $faculty_name'),
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('courses')
-            .where('department', isEqualTo: faculty_name)
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final courses = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: courses.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(courses[index]['name']),
-                subtitle: Text(courses[index]['description']),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final departmentService = DepartmentService();
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Program Learning Outcomes'),
+//       ),
+//       body: FutureBuilder<List<PLO>>(
+//         future: departmentService.getPLOs(departmentId),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           } else if (snapshot.hasError) {
+//             return Center(child: Text('Error: ${snapshot.error}'));
+//           } else if (snapshot.hasData) {
+//             final plos = snapshot.data!;
+//             return ListView.builder(
+//               itemCount: plos.length,
+//               itemBuilder: (context, index) {
+//                 return ListTile(
+//                   title: Text(plos[index].name),
+//                   subtitle: Text(plos[index].description),
+//                 );
+//               },
+//             );
+//           } else {
+//             return Center(child: Text('No PLOs found'));
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }

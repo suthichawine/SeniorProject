@@ -1,138 +1,234 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:seniorproject/models/department_model.dart';
-import 'package:seniorproject/screens/course_screen.dart';
-import 'package:seniorproject/services/department_service.dart';
 
-class DepartmentScreen extends StatelessWidget {
+class DepartmentScreen extends StatefulWidget {
   final String message;
 
   DepartmentScreen({Key? key, required this.message}) : super(key: key);
-  final TextEditingController _controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-    final departmentController = TextEditingController();
-    final departmentService = DepartmentService();
+  _DepartmentScreenState createState() => _DepartmentScreenState();
+}
 
+class _DepartmentScreenState extends State<DepartmentScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(message),
+        title: Text(widget.message),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: departmentController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter your text',
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                final dep = [
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกวิทยาศาสตร์ทั่วไป",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกเกษตรศาสตร์",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกฟิสิกส์",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกภาษาไทย",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกคอมพิวเตอร์",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกการประถมศึกษา",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกชีววิทยา",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกสังคมศึกษา",
-                  "สาขาวิชานวัตกรรมการจัดการเรียนรู้ วิชาเอกพลศึกษา",
-                  "ค.ด.นวัตกรรมการจัดการเรียนรู้",
-                  "ค.ม.นวัตกรรมการจัดการเรียนรู้",
-                  "ค.ม.บริหารการศึกษา",               
-                ];
-                dep.forEach((e) {
-                  departmentService.create("x40o0D2MOVkcSKUCANny",e);
-                  print(e);
-                });
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('department').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasData) {
+            var departments = snapshot.data!.docs;
+
+            if (departments.isEmpty) {
+              return Center(child: Text('No department found.'));
+            }
+
+            return ListView.builder(
+              itemCount: departments.length,
+              itemBuilder: (context, index) {
+                var department = departments[index];
+                var departmentName = department['department_name'] ?? 'Unknown Department';
+
+                return Card(
+                  margin: EdgeInsets.all(8.0),
+                  elevation: 4,
+                  child: ListTile(
+                    title: Text(departmentName),
+                    subtitle: Text('Faculty ID: ${department['faculty_id']}'),
+                    trailing: Icon(Icons.arrow_forward),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PLOScreen(departmentId: department.id),
+                        ),
+                      );
+                    },
+                  ),
+                );
               },
-              child: Text('Submit'),
-            ),
-            const SizedBox(height: 16),
-            FutureBuilder<List<Department>>(
-              future: departmentService.getDepartment(message),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  final departments = snapshot.data!;
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: departments.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(departments[index].departmentName),
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return Text('No data found');
-                }
-              },
-            ),
-          ],
-        ),
+            );
+          }
+
+          return Center(child: Text('No departments found.'));
+        },
       ),
     );
   }
 }
 
-// Expanded(
-//   child: GridView.builder(
-//     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//       crossAxisCount: 2,
-//       mainAxisSpacing: 10.0,
-//       crossAxisSpacing: 10.0,
-//       childAspectRatio: 1.0,
-//     ),
-//     itemCount: departments.length,
-//     itemBuilder: (context, index) {
-//       return Card(
-//         child: InkWell(
-//           onTap: () {
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                 builder: (context) => CourseScreen(
-//                   department: departments[index],
-//                 ),
-//               ),
-//             );
-//           },
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Image.asset(
-//                 departmentLogo,
-//                 width: 80,
-//                 height: 80,
-//                 fit: BoxFit.cover,
-//               ),
-//               SizedBox(height: 8),
-//               Flexible(
-//                 child: Text(
-//                   departments[index],
-//                   style: TextStyle(fontSize: 16.0),
-//                   textAlign: TextAlign.center,
-//                   overflow: TextOverflow.ellipsis,
-//                   maxLines: 3,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     },
-//   ),
-// ),
+class PLOScreen extends StatefulWidget {
+  final String departmentId;
+
+  PLOScreen({Key? key, required this.departmentId}) : super(key: key);
+
+  @override
+  _PLOScreenState createState() => _PLOScreenState();
+}
+
+class _PLOScreenState extends State<PLOScreen> {
+  final TextEditingController _controllerPLO = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('PLOs'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controllerPLO,
+              decoration: InputDecoration(labelText: 'Enter PLO'),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_controllerPLO.text.isNotEmpty) {
+                FirebaseFirestore.instance
+                    .collection('department')
+                    .doc(widget.departmentId)
+                    .update({
+                  'plos': FieldValue.arrayUnion([
+                    {'PLO': _controllerPLO.text}
+                  ]),
+                });
+                _controllerPLO.clear();
+              }
+            },
+            child: Text('Add PLO'),
+          ),
+          Expanded(
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('department')
+                  .doc(widget.departmentId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasData && snapshot.data != null) {
+                  var document = snapshot.data!;
+                  var plos = document.get('plos') as List<dynamic>?;
+
+                  if (plos == null || plos.isEmpty) {
+                    return Center(child: Text('No PLO data found.'));
+                  }
+
+                  return ListView.builder(
+                    itemCount: plos.length,
+                    itemBuilder: (context, index) {
+                      var plo = plos[index] as Map<String, dynamic>;
+                      var ploText =
+                          plo['PLO'] ?? 'No PLO description available';
+
+                      return ListTile(
+                        title: Text(ploText),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                _showEditDialog(ploText, index);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _deletePLO(ploText);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(child: Text('No PLO data found.'));
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deletePLO(String ploText) {
+    FirebaseFirestore.instance
+        .collection('department')
+        .doc(widget.departmentId)
+        .update({
+      'plos': FieldValue.arrayRemove([
+        {'PLO': ploText}
+      ]),
+    });
+  }
+
+  void _showEditDialog(String oldPLO, int index) {
+    TextEditingController _editController = TextEditingController(text: oldPLO);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit PLO'),
+          content: TextField(
+            controller: _editController,
+            decoration: InputDecoration(labelText: 'PLO'),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _updatePLO(oldPLO, _editController.text);
+              },
+              child: Text('Update'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updatePLO(String oldPLO, String newPLO) {
+    if (newPLO.isNotEmpty) {
+      FirebaseFirestore.instance
+          .collection('department')
+          .doc(widget.departmentId)
+          .update({
+        'plos': FieldValue.arrayRemove([
+          {'PLO': oldPLO}
+        ]),
+      });
+
+      FirebaseFirestore.instance
+          .collection('department')
+          .doc(widget.departmentId)
+          .update({
+        'plos': FieldValue.arrayUnion([
+          {'PLO': newPLO}
+        ]),
+      });
+    }
+  }
+}
