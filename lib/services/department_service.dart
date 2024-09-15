@@ -18,16 +18,16 @@ class DepartmentService {
   //   return;
   }
 
-  Future<List<Department>> getDepartment(String facultyId) async {
-    QuerySnapshot querySnapshot =
-        await department.where('faculty_id', isEqualTo: facultyId).get();
-    List<Department> departments = querySnapshot.docs.map((doc) {
-      return Department(
-        id: doc.id,
-        departmentName: doc["department_name"],
-        facultyId: doc["faculty_id"],
-      );
-    }).toList();
-    return departments;
-  }
+  // Future<List<Department>> getDepartment(String facultyId) async {
+  //   QuerySnapshot querySnapshot =
+  //       await department.where('faculty_id', isEqualTo: facultyId).get();
+  //   List<Department> departments = querySnapshot.docs.map((doc) {
+  //     return Department(
+  //       id: doc.id,
+  //       departmentName: doc["department_name"],
+  //       facultyId: doc["faculty_id"],
+  //     );
+  //   }).toList();
+  //   return departments;
+  // }
 }

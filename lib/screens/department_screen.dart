@@ -18,7 +18,7 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
         title: Text(widget.message),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('department').snapshots(),
+        stream: FirebaseFirestore.instance.collection('department').where("faculty_id",isEqualTo: widget.message).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -82,95 +82,76 @@ class _PLOScreenState extends State<PLOScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('PLOs'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controllerPLO,
-              decoration: InputDecoration(labelText: 'Enter PLO'),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (_controllerPLO.text.isNotEmpty) {
-                FirebaseFirestore.instance
-                    .collection('department')
-                    .doc(widget.departmentId)
-                    .update({
-                  'plos': FieldValue.arrayUnion([
-                    {'PLO': _controllerPLO.text}
-                  ]),
-                });
-                _controllerPLO.clear();
-              }
-            },
-            child: Text('Add PLO'),
-          ),
-          Expanded(
-            child: StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('department')
-                  .doc(widget.departmentId)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(widget.departmentId),
+    ),
+    body: StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+        .collection('department')
+        .doc(widget.departmentId) // Use the departmentId from the widget
+        .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-                if (snapshot.hasData && snapshot.data != null) {
-                  var document = snapshot.data!;
-                  var plos = document.get('plos') as List<dynamic>?;
+        if (snapshot.hasData) {
+          var department = snapshot.data;
 
-                  if (plos == null || plos.isEmpty) {
-                    return Center(child: Text('No PLO data found.'));
-                  }
+          if (department == null || !department.exists) {
+            return Center(child: Text('No department found.'));
+          }
 
-                  return ListView.builder(
-                    itemCount: plos.length,
-                    itemBuilder: (context, index) {
-                      var plo = plos[index] as Map<String, dynamic>;
-                      var ploText =
-                          plo['PLO'] ?? 'No PLO description available';
+          var departmentData = department.data() as Map<String, dynamic>;
+          var departmentName = departmentData['department_name'] ?? 'Unknown Department';
 
-                      return ListTile(
-                        title: Text(ploText),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                _showEditDialog(ploText, index);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                _deletePLO(ploText);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return Center(child: Text('No PLO data found.'));
-                }
+          // return Text(departmentData["plos"].toString(),style: TextStyle(fontSize: 20),);
+          return ListView.builder(
+              itemCount: departmentData["plos"].length,
+              itemBuilder: (context, index) {
+                var plos = departmentData["plos"][index];
+
+                return Card(
+                  margin: EdgeInsets.all(8.0),
+                  elevation: 4,
+                  child: ListTile(
+                    title: Text(plos["PLO"]),
+                    // subtitle: Text('Faculty ID: ${department['faculty_id']}'),
+                    // trailing: Icon(Icons.arrow_forward),
+                    // onTap: () {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => PLOScreen(departmentId: department.id),
+                    //     ),
+                    //   );
+                    // },
+                  ),
+                );
               },
-            ),
-          ),
-        ],
-      ),
-    );
+            );
+        }
+
+        return Center(child: Text('No department found.'));
+      },
+    ),
+  );
+}
+
+
+  void _addPLO(String ploText) {
+    FirebaseFirestore.instance
+        .collection('department')
+        .doc(widget.departmentId)
+        .set({
+      'plos': FieldValue.arrayUnion([
+        {'PLO': ploText}
+      ]),
+    }, SetOptions(merge: true));
   }
 
   void _deletePLO(String ploText) {
@@ -219,15 +200,15 @@ class _PLOScreenState extends State<PLOScreen> {
         'plos': FieldValue.arrayRemove([
           {'PLO': oldPLO}
         ]),
-      });
-
-      FirebaseFirestore.instance
-          .collection('department')
-          .doc(widget.departmentId)
-          .update({
-        'plos': FieldValue.arrayUnion([
-          {'PLO': newPLO}
-        ]),
+      }).then((_) {
+        FirebaseFirestore.instance
+            .collection('department')
+            .doc(widget.departmentId)
+            .update({
+          'plos': FieldValue.arrayUnion([
+            {'PLO': newPLO}
+          ]),
+        });
       });
     }
   }
