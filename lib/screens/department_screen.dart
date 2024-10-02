@@ -12,60 +12,75 @@ class DepartmentScreen extends StatefulWidget {
 
 class _DepartmentScreenState extends State<DepartmentScreen> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.message),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('department').where("faculty_id",isEqualTo: widget.message).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Department'),
+    ),
+    body: StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('department')
+          .where("faculty_id", isEqualTo: widget.message)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasData) {
+          var departments = snapshot.data!.docs;
+
+          if (departments.isEmpty) {
+            return Center(child: Text('No department found.'));
           }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
 
-          if (snapshot.hasData) {
-            var departments = snapshot.data!.docs;
+          // เปลี่ยน ListView เป็น GridView
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // จำนวนคอลัมน์
+              childAspectRatio: 1, // อัตราส่วนของขนาด
+            ),
+            itemCount: departments.length,
+            itemBuilder: (context, index) {
+              var department = departments[index];
+              var departmentName =
+                  department['department_name'] ?? 'Unknown Department';
 
-            if (departments.isEmpty) {
-              return Center(child: Text('No department found.'));
-            }
 
-            return ListView.builder(
-              itemCount: departments.length,
-              itemBuilder: (context, index) {
-                var department = departments[index];
-                var departmentName = department['department_name'] ?? 'Unknown Department';
-
-                return Card(
-                  margin: EdgeInsets.all(8.0),
-                  elevation: 4,
-                  child: ListTile(
-                    title: Text(departmentName),
-                    subtitle: Text('Faculty ID: ${department['faculty_id']}'),
-                    trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PLOScreen(departmentId: department.id),
-                        ),
-                      );
-                    },
+              return Card(
+                margin: EdgeInsets.all(20.0),
+                elevation: 15,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PLOScreen(departmentId: department.id),
+                      ),
+                    );
+                  },
+                  child: Center(
+                    child: ListTile(
+                      title: Text(departmentName),
+                      // subtitle: Text('Faculty ID: ${department['faculty_id']}'),
+                    ),
                   ),
-                );
-              },
-            );
-          }
+                ),
+              );
+            },
+          );
+        }
 
-          return Center(child: Text('No departments found.'));
-        },
-      ),
-    );
-  }
+        return Center(child: Text('No departments found.'));
+      },
+    ),
+  );
+}
+
 }
 
 class PLOScreen extends StatefulWidget {
@@ -78,93 +93,94 @@ class PLOScreen extends StatefulWidget {
 }
 
 class _PLOScreenState extends State<PLOScreen> {
-  final TextEditingController _controllerPLO = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text(widget.departmentId),
-    ),
-    body: StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-        .collection('department')
-        .doc(widget.departmentId) // Use the departmentId from the widget
-        .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasData) {
-          var department = snapshot.data;
-
-          if (department == null || !department.exists) {
-            return Center(child: Text('No department found.'));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('วิศวกรรมคอมพิวเตอร์'),
+      ),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('department')
+            .doc(widget.departmentId)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
           }
 
-          var departmentData = department.data() as Map<String, dynamic>;
-          var departmentName = departmentData['department_name'] ?? 'Unknown Department';
+          if (snapshot.hasData) {
+            var department = snapshot.data;
 
-          // return Text(departmentData["plos"].toString(),style: TextStyle(fontSize: 20),);
-          return ListView.builder(
-              itemCount: departmentData["plos"].length,
+            if (department == null || !department.exists) {
+              return Center(child: Text('No department found.'));
+            }
+
+            var departmentData = department.data() as Map<String, dynamic>;
+
+            // ตรวจสอบว่ามี 'plos' ในข้อมูลหรือไม่
+            var plos = departmentData["plos"];
+            if (plos == null || plos.isEmpty) {
+              return Center(child: Text('No PLOs found.'));
+            }
+
+            // ถ้ามีข้อมูล PLOs แสดงรายการพร้อมหมายเลข
+            return ListView.builder(
+              itemCount: plos.length,
               itemBuilder: (context, index) {
-                var plos = departmentData["plos"][index];
+                // ตรวจสอบว่า plos[index] มีข้อมูลหรือไม่และไม่เป็น null
+                var ploEntry = plos[index];
+                if (ploEntry == null || !ploEntry.containsKey('PLO')) {
+                  return ListTile(title: Text('Unknown PLO'));
+                }
 
+                var plo = ploEntry['PLO'] ?? 'Unknown PLO';
+
+                // เพิ่มหมายเลข PLO ตาม index
                 return Card(
                   margin: EdgeInsets.all(8.0),
                   elevation: 4,
                   child: ListTile(
-                    title: Text(plos["PLO"]),
-                    // subtitle: Text('Faculty ID: ${department['faculty_id']}'),
-                    // trailing: Icon(Icons.arrow_forward),
-                    // onTap: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => PLOScreen(departmentId: department.id),
-                    //     ),
-                    //   );
-                    // },
+                    title: Text('${index + 1}. $plo'),  // ใส่หมายเลข PLO ที่นี่
+                    trailing: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        _showEditDialog(plo, index);
+                      },
+                    ),
                   ),
                 );
               },
             );
-        }
+          }
 
-        return Center(child: Text('No department found.'));
-      },
-    ),
-  );
-}
-
-
-  void _addPLO(String ploText) {
-    FirebaseFirestore.instance
-        .collection('department')
-        .doc(widget.departmentId)
-        .set({
-      'plos': FieldValue.arrayUnion([
-        {'PLO': ploText}
-      ]),
-    }, SetOptions(merge: true));
+          return Center(child: Text('No department found.'));
+        },
+      ),
+    );
   }
 
+  // ฟังก์ชันเพิ่ม PLO
+  void _addPLO(String ploText) {
+    if (ploText.isNotEmpty) {
+      FirebaseFirestore.instance.collection('department').doc(widget.departmentId).set({
+        'plos': FieldValue.arrayUnion([{'PLO': ploText}]),
+      }, SetOptions(merge: true));
+    }
+  }
+
+  // ฟังก์ชันลบ PLO
   void _deletePLO(String ploText) {
-    FirebaseFirestore.instance
-        .collection('department')
-        .doc(widget.departmentId)
-        .update({
-      'plos': FieldValue.arrayRemove([
-        {'PLO': ploText}
-      ]),
+    FirebaseFirestore.instance.collection('department').doc(widget.departmentId).update({
+      'plos': FieldValue.arrayRemove([{'PLO': ploText}]),
     });
   }
 
+  // ฟังก์ชันเปิด Dialog แก้ไข PLO
   void _showEditDialog(String oldPLO, int index) {
     TextEditingController _editController = TextEditingController(text: oldPLO);
 
@@ -191,23 +207,14 @@ class _PLOScreenState extends State<PLOScreen> {
     );
   }
 
+  // ฟังก์ชันอัปเดต PLO
   void _updatePLO(String oldPLO, String newPLO) {
     if (newPLO.isNotEmpty) {
-      FirebaseFirestore.instance
-          .collection('department')
-          .doc(widget.departmentId)
-          .update({
-        'plos': FieldValue.arrayRemove([
-          {'PLO': oldPLO}
-        ]),
+      FirebaseFirestore.instance.collection('department').doc(widget.departmentId).update({
+        'plos': FieldValue.arrayRemove([{'PLO': oldPLO}]),
       }).then((_) {
-        FirebaseFirestore.instance
-            .collection('department')
-            .doc(widget.departmentId)
-            .update({
-          'plos': FieldValue.arrayUnion([
-            {'PLO': newPLO}
-          ]),
+        FirebaseFirestore.instance.collection('department').doc(widget.departmentId).update({
+          'plos': FieldValue.arrayUnion([{'PLO': newPLO}]),
         });
       });
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:seniorproject/screens/coursescreen.dart';
 import 'package:seniorproject/screens/faculty_screen.dart';
-import 'package:seniorproject/screens/home_screen.dart';
 import 'package:seniorproject/screens/university_screen.dart';
+import 'package:seniorproject/screens/home_screen.dart';
 
 class BottomsNav extends StatefulWidget {
   const BottomsNav({super.key});
@@ -16,8 +16,8 @@ class _BottomsNavState extends State<BottomsNav> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
-    UniversityScreen(),
     HomeScreen(),
+    UniversityScreen(),
     FacultyScreen(),
     // CourseScreen(),
   ];
@@ -79,7 +79,7 @@ class _BottomsNavState extends State<BottomsNav> {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.blue[1000],
         onTap: _onItemTapped,
       ),
     );

@@ -29,6 +29,9 @@ dependencies:
   rive: ^0.9.1
   flutter_svg: ^1.1.6
   firebase_core: ^2.27.0
+  firebase_auth: ^4.7.0
+
+
   cloud_firestore: ^4.15.8
   get: ^4.6.6
   shimmer: ^3.0.0
@@ -48,10 +51,10 @@ flutter:
     - assets/images/
     - assets/json/university.json
     - assets/images/art.png
-    - assets/images/computer.jpg
     - assets/images/ksu1.jpg
     - assets/images/ksu2.jpg
     - assets/images/ksu3.jpg
+    
 
 
 

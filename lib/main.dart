@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart'; // เพิ่มการ import GetX
 import 'package:seniorproject/app_router.dart';
 import 'package:seniorproject/themes/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp( // เปลี่ยนเป็น GetMaterialApp
       debugShowCheckedModeBanner: false, 
       theme: AppTheme.lightTheme,
       routes: AppRouter.routes,
